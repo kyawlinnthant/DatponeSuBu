@@ -34,7 +34,7 @@ android {
 
 dependencies {
 
-    implementation(project(":shared:core"))
+    implementation project(':core:util')
 
     implementation 'androidx.core:core-ktx:1.9.0'
 
@@ -50,6 +50,7 @@ dependencies {
 
     //di
     implementation "com.google.dagger:hilt-android:$rootProject.hilt_version"
+    testImplementation project(path: ':test-shared')
     kapt "com.google.dagger:hilt-compiler:$rootProject.hilt_version"
 
     //testing

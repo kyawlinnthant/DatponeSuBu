@@ -11,6 +11,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,6 +28,12 @@ object PexelsDataModule {
     @PexelsOkHttpClient
     fun providesOkhttp(): OkHttpClient = OkHttpClient.Builder()
         .addNetworkInterceptor(OkHttpProfilerInterceptor())
+        .addInterceptor { chain ->
+            chain.request().newBuilder()
+                .addHeader(PexelsService.AUTHORIZATION, "O_AUTH_AUTHENTICATION")
+                .build()
+                .let(chain::proceed)
+        }
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
         .writeTimeout(30, TimeUnit.SECONDS)
@@ -50,6 +57,8 @@ object PexelsDataModule {
     fun providesPexelsService(
         @PexelsRetrofit retrofit: Retrofit
     ): PexelsService = retrofit.create(PexelsService::class.java)
+
+
 
     @Provides
     @PexelsIo

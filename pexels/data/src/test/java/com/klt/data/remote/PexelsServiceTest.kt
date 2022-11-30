@@ -14,12 +14,12 @@ import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
 @ExperimentalCoroutinesApi
 class PexelsServiceTest {
 
-    private lateinit var service: PexelsService
     private lateinit var mockWebServer: MockWebServer
-
+    private lateinit var service: PexelsService
 
     @Before
     fun setup() {
@@ -37,7 +37,7 @@ class PexelsServiceTest {
     }
 
     private fun enqueueResponse(fileName: String) {
-        val inputStream = javaClass.classLoader!!.getResourceAsStream("api/$fileName")
+        val inputStream = javaClass.classLoader!!.getResourceAsStream(fileName)
         val mockResponse = MockResponse()
         val source = inputStream.source().buffer()
         mockWebServer.enqueue(
@@ -48,7 +48,7 @@ class PexelsServiceTest {
     //photos
     @Test
     @Throws(Exception::class)
-    fun photosSuccess() = runTest {
+    fun `getting photos successfully parse to DTO`() = runTest {
         enqueueResponse(fileName = "photoSuccess.json")
         val response = service.getPhotos(1)
         val request = mockWebServer.takeRequest()
@@ -64,8 +64,8 @@ class PexelsServiceTest {
 
 
     @Test(expected = MalformedJsonException::class)
-    fun photosMalformed() = runTest {
-        enqueueResponse(fileName = "photoMalformed.json")
+    fun `malformed json meets MalformedJsonException`() = runTest {
+        enqueueResponse(fileName = "malformed.json")
         service.getPhotos(1)
     }
 

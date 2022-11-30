@@ -7,6 +7,7 @@ import retrofit2.http.Query
 
 interface PexelsService {
     companion object {
+        const val AUTHORIZATION = "Authorization"
         const val BASE_URL = "https://api.pexels.com/"
         private const val VERSION = "v1/"
         private const val PHOTOS = VERSION + "curated"

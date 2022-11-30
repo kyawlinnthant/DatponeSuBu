@@ -1,10 +1,10 @@
 package com.klt.data.repository
 
-import com.klt.core.Result
-import com.klt.core.safeApiCall
 import com.klt.data.di.PexelsIo
 import com.klt.data.model.PhotoDTO
 import com.klt.data.remote.PexelsService
+import com.klt.util.Result
+import com.klt.util.safeApiCall
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
