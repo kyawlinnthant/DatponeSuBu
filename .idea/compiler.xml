@@ -2,8 +2,16 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel target="1.7">
+      <module name="DatponeSuBu.pexels" target="11" />
+      <module name="DatponeSuBu.pexels.data" target="11" />
+      <module name="DatponeSuBu.pexels.domain" target="11" />
+      <module name="DatponeSuBu.pexels.presentation" target="11" />
       <module name="DatponeSuBu.shared" target="11" />
       <module name="DatponeSuBu.shared.core" target="11" />
+      <module name="DatponeSuBu.unsplash" target="11" />
+      <module name="DatponeSuBu.unsplash.data" target="11" />
+      <module name="DatponeSuBu.unsplash.domain" target="11" />
+      <module name="DatponeSuBu.unsplash.presentation" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

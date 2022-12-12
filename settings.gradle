@@ -15,18 +15,10 @@ dependencyResolutionManagement {
 rootProject.name = "DatponeSuBu"
 include ':app'
 
-include ':pexels'
-include ':pexels:data'
-include ':pexels:domain'
-include ':pexels:presentation'
-
 include ':test-shared'
 
 include ':core'
 include ':core:ui'
 include ':core:util'
-
-include ':unsplash'
-include ':unsplash:data'
-include ':unsplash:domain'
-include ':unsplash:presentation'
+include ':pexels-service'
+include ':unsplash-service'

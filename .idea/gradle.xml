@@ -14,15 +14,9 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/ui" />
             <option value="$PROJECT_DIR$/core/util" />
-            <option value="$PROJECT_DIR$/pexels" />
-            <option value="$PROJECT_DIR$/pexels/data" />
-            <option value="$PROJECT_DIR$/pexels/domain" />
-            <option value="$PROJECT_DIR$/pexels/presentation" />
+            <option value="$PROJECT_DIR$/pexels-service" />
             <option value="$PROJECT_DIR$/test-shared" />
-            <option value="$PROJECT_DIR$/unsplash" />
-            <option value="$PROJECT_DIR$/unsplash/data" />
-            <option value="$PROJECT_DIR$/unsplash/domain" />
-            <option value="$PROJECT_DIR$/unsplash/presentation" />
+            <option value="$PROJECT_DIR$/unsplash-service" />
           </set>
         </option>
       </GradleProjectSettings>
