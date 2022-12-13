@@ -16,11 +16,10 @@ class PexelsApiRepositoryImpl @Inject constructor(
     private val service: PexelsService,
     @PexelsIo val io: CoroutineDispatcher,
 ) : PexelsApiRepository {
+
     override suspend fun getPhotos(pageNumber: Int): Flow<Result<PexelsPhotosDTO>> {
         val response = safeApiCall {
-            service.getPhotos(
-                pageNumber = pageNumber
-            )
+            service.getPhotos(pageNumber = pageNumber)
         }
         return flow {
             emit(value = response)

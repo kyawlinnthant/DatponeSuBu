@@ -1,5 +1,6 @@
 package com.klt.unsplash_service.di
 
+import com.klt.unsplash.data.BuildConfig
 import com.klt.unsplash_service.remote.UnsplashService
 import com.klt.unsplash_service.repository.UnsplashApiRepository
 import com.klt.unsplash_service.repository.UnsplashApiRepositoryImpl
@@ -24,18 +25,37 @@ object UnsplashModule {
     @Provides
     @Singleton
     @UnsplashOkHttpClient
-    fun providesOkhttp(): OkHttpClient = OkHttpClient.Builder()
-        .addNetworkInterceptor(OkHttpProfilerInterceptor())
-        .addInterceptor { chain ->
-            chain.request().newBuilder()
-                .addHeader(UnsplashService.AUTHORIZATION, "pehAInc1M37NqAQ8l8Zx2pH8RjG44qGNsAC_t-qONRA")//please don't reverse engineering, IDK how to hide this key in multimodule app. :C
+    fun providesOkhttp(): OkHttpClient =
+        if (BuildConfig.DEBUG) {
+            OkHttpClient.Builder()
+                .addNetworkInterceptor(OkHttpProfilerInterceptor())
+                .addInterceptor { chain ->
+                    chain.request().newBuilder()
+                        .addHeader(
+                            UnsplashService.AUTHORIZATION,
+                            "Client-ID pehAInc1M37NqAQ8l8Zx2pH8RjG44qGNsAC_t-qONRA"
+                        )//please don't reverse engineering, IDK how to hide this key in multimodule app. :C
+                        .build()
+                        .let(chain::proceed)
+                }
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
                 .build()
-                .let(chain::proceed)
-        }
-        .connectTimeout(30, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
-        .writeTimeout(30, TimeUnit.SECONDS)
-        .build()
+        }else  OkHttpClient.Builder()
+            .addInterceptor { chain ->
+                chain.request().newBuilder()
+                    .addHeader(
+                        UnsplashService.AUTHORIZATION,
+                        "Client-ID pehAInc1M37NqAQ8l8Zx2pH8RjG44qGNsAC_t-qONRA"
+                    )//please don't reverse engineering, IDK how to hide this key in multimodule app. :C
+                    .build()
+                    .let(chain::proceed)
+            }
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .build()
 
     @Provides
     @Singleton

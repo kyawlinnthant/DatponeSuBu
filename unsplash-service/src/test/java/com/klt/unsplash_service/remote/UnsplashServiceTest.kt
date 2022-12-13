@@ -2,6 +2,7 @@ package com.klt.unsplash_service.remote
 
 import com.google.common.truth.Truth
 import com.google.gson.stream.MalformedJsonException
+import com.klt.util.Constants
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -47,16 +48,22 @@ class UnsplashServiceTest {
     @Test
     @Throws(Exception::class)
     fun `photos from unsplash successfully parse to DTO`() = runTest {
+        val requestedPageNumber = 1
         enqueueResponse(fileName = "photos.json")
         val response = service.getPhotos(
-            pageNumber = 1,
-            photosPerPage = 15,
-            orderBy = "latest"
+            pageNumber = requestedPageNumber
         )
         val request = mockWebServer.takeRequest()
+        //test request is correct?
+        Truth.assertThat(request.method).isEqualTo("GET")
+        Truth.assertThat(request.path)
+            .isEqualTo("/" + UnsplashService.PHOTOS +
+                    "?page=$requestedPageNumber" +
+                    "&per_page=${Constants.LOAD_SIZE}" +
+                    "&order_by=${Constants.LOAD_SEQUENCE}")
 
-        Truth.assertThat(request.path).isEqualTo("/photos?page=1&per_page=15&order_by=latest")
         val data = response.body()
+        //test response is correct?
         Truth.assertThat(data?.size).isEqualTo(15)
     }
 

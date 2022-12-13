@@ -3,6 +3,7 @@ package com.klt.pexels_service.di
 import com.klt.pexels_service.remote.PexelsService
 import com.klt.pexels_service.repository.PexelsApiRepository
 import com.klt.pexels_service.repository.PexelsApiRepositoryImpl
+import com.klt.pixels.data.BuildConfig
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import dagger.Binds
 import dagger.Module
@@ -26,18 +27,37 @@ object PexelsDataModule {
     @Provides
     @Singleton
     @PexelsOkHttpClient
-    fun providesOkhttp(): OkHttpClient = OkHttpClient.Builder()
-        .addNetworkInterceptor(OkHttpProfilerInterceptor())
-        .addInterceptor { chain ->
-            chain.request().newBuilder()
-                .addHeader(PexelsService.AUTHORIZATION, "563492ad6f9170000100000150cf5003da2241dd99d1c9ab8fa28971")//please don't reverse engineering, IDK how to hide this key in multimodule app. :C
+    fun providesOkhttp(): OkHttpClient =
+
+        if (BuildConfig.DEBUG){
+            OkHttpClient.Builder()
+                .addNetworkInterceptor(OkHttpProfilerInterceptor())
+                .addInterceptor { chain ->
+                    chain.request().newBuilder()
+                        .addHeader(PexelsService.AUTHORIZATION, "563492ad6f9170000100000150cf5003da2241dd99d1c9ab8fa28971")//please don't reverse engineering, IDK how to hide this key in multimodule app. :C
+                        .build()
+                        .let(chain::proceed)
+                }
+                .addNetworkInterceptor(OkHttpProfilerInterceptor())
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
                 .build()
-                .let(chain::proceed)
+        }else{
+            OkHttpClient.Builder()
+                .addNetworkInterceptor(OkHttpProfilerInterceptor())
+                .addInterceptor { chain ->
+                    chain.request().newBuilder()
+                        .addHeader(PexelsService.AUTHORIZATION, "563492ad6f9170000100000150cf5003da2241dd99d1c9ab8fa28971")//please don't reverse engineering, IDK how to hide this key in multimodule app. :C
+                        .build()
+                        .let(chain::proceed)
+                }
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .build()
         }
-        .connectTimeout(30, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
-        .writeTimeout(30, TimeUnit.SECONDS)
-        .build()
+
 
     @Provides
     @Singleton

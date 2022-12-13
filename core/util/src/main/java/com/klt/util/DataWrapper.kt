@@ -26,3 +26,33 @@ inline fun <T> safeApiCall(
         return Result.Error(error = e.localizedMessage ?: "Something's Wrong!")
     }
 }
+
+inline fun <T, K> safeApiCall(
+    successCall: () -> Response<T>,
+    errorCall: () -> Response<K>
+): Result<Any> {
+    try {
+        val response = successCall()
+        if (response.isSuccessful) {
+            val body = response.body() ?: return Result.Error(error = "EMPTY BODY")
+            return Result.Success(data = body)
+        }
+
+        return Result.Error(
+            error = "ERROR CODE ${response.code()} : ${response.errorBody().toString()}"
+        )
+    } catch (e: Exception) {
+        try {
+            val error = errorCall()
+            if (error.isSuccessful) {
+                val body = error.body() ?: return Result.Error(error = "EMPTY BODY")
+                return Result.Success(data = body)
+            }
+            return Result.Error(
+                error = "ERROR CODE ${error.code()} : ${error.errorBody().toString()}"
+            )
+        } catch (e: Exception) {
+            return Result.Error(error = e.localizedMessage ?: "Something's Wrong!")
+        }
+    }
+}

@@ -8,7 +8,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import javax.inject.Qualifier
 import javax.inject.Singleton
 
@@ -18,6 +20,12 @@ object DataModule {
     @Provides
     @Io
     fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
+
+    @Provides
+    @RepoScope
+    fun provideRepoScope(
+        @Io ioDispatcher: CoroutineDispatcher
+    ): CoroutineScope = CoroutineScope(SupervisorJob() + ioDispatcher)
 }
 
 @Module
@@ -32,3 +40,7 @@ interface RepositoryModule {
 @Retention(AnnotationRetention.RUNTIME)
 @Qualifier
 annotation class Io
+
+@Retention(AnnotationRetention.RUNTIME)
+@Qualifier
+annotation class RepoScope

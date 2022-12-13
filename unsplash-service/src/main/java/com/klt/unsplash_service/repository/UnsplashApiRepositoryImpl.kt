@@ -1,6 +1,7 @@
 package com.klt.unsplash_service.repository
 
 import com.klt.unsplash_service.di.UnsplashIo
+import com.klt.unsplash_service.model.UnsplashErrorDTO
 import com.klt.unsplash_service.model.UnsplashPhotoDTO
 import com.klt.unsplash_service.remote.UnsplashService
 import com.klt.util.Result
@@ -16,6 +17,7 @@ class UnsplashApiRepositoryImpl @Inject constructor(
     @UnsplashIo private val io: CoroutineDispatcher
 ) : UnsplashApiRepository {
     override suspend fun getPhotos(pageNumber: Int): Flow<Result<List<UnsplashPhotoDTO>>> {
+
         val response = safeApiCall {
             service.getPhotos(
                 pageNumber = pageNumber
